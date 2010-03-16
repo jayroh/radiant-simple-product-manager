@@ -6,8 +6,6 @@
 #
 ######
 
-require 'json'
-
 module JsonFields
 	def self.included(base)
 		base.extend(ClassMethods)

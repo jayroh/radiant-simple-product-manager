@@ -1,6 +1,7 @@
 class Admin::ProductsController < Admin::ResourceController
 	model_class Product
 	helper :spm
+  before_filter :add_jquery
 
 	def upload_image
 		@product=Product.find(params[:product_id])
@@ -46,4 +47,11 @@ class Admin::ProductsController < Admin::ResourceController
 		end
 		redirect_to :controller => 'admin/products', :action => 'edit', :id => @product_image.product, :anchor => :images
 	end
+
+protected
+
+  def add_jquery
+    include_javascript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
+  end
+
 end

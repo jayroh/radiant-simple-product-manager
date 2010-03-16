@@ -24,11 +24,8 @@
 
 <% if Category.count > 0 then %>
   <h1>Products</h1>
-
   <p>You can enter products here, which will show up on the public side of your website.</p>
-
   <table cellspacing="0" cellpadding="0" border="0" class="index" id="products">
-
     <thead>
       <tr>
         <th class="product">Product</th>
@@ -37,23 +34,20 @@
         <th class="modify" style="width: 65px;">Remove</th>
       </tr>
     </thead>
-
     <tbody>
-			<% last_category_id = nil -%>
+      <% last_category_id = nil -%>
       <% Product.find(:all, :include => :category, :order => 'categories.parent_id ASC, categories.id ASC, categories.sequence ASC, products.sequence ASC').each do |product| %>
-				<% if product.category_id != last_category_id then -%>
+        <% if product.category_id != last_category_id then -%>
 				<tr class="node level-1">
 					<th colspan="4">
 						<%= link_to product.category.to_s, edit_admin_category_url(product.category) %>
 					</th>
 				</tr>
-				<% end -%>
-				<% last_category_id = product.category_id -%>
-				<%= render :partial => 'product_row', :locals => { :product => product } %>
+		<% end -%>
+		<% last_category_id = product.category_id -%>
+		<%= render :partial => 'product_row', :locals => { :product => product } %>
       <% end %>
     </tbody>
-
   </table>
-
   <p><%= link_to image("simple_product_manager/new-product", :alt => "New product"), new_admin_product_url %></p>
 <% end %>

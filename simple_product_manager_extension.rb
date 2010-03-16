@@ -1,10 +1,11 @@
+require 'json'
 require 'json_fields'
 
 # Set the default attachment sizes
 PRODUCT_ATTACHMENT_SIZES={:thumbnail => '75x75>', :product => '250x250>'}
 		
 class SimpleProductManagerExtension < Radiant::Extension
-	version "0.8.1"
+	version "0.9.0"
 	description "Manages Products and Product Categories for use across the site."
 	url "http://github.com/jstirk/radiant-simple-product-manager/tree/master"
 	
@@ -23,7 +24,10 @@ class SimpleProductManagerExtension < Radiant::Extension
 	end
 	
 	def activate
-		admin.tabs.add "Products", "/admin/products", :after => "Layouts", :visibility => [:all]
+		tab "Catalog" do
+            add_item("Products", "/admin/products", :visibility => [:all])
+            add_item("Categories", "/admin/categories", :after => "Products", :visibility => [:all])
+    end
 		Page.send :include, SimpleProductManagerTag
 
 		# If our RadiantConfig settings are blank, set them up now
@@ -33,8 +37,8 @@ class SimpleProductManagerExtension < Radiant::Extension
 		Radiant::Config['simple_product_manager.category_layout'] ||= 'Category'
 	end
 	
-	def deactivate
-		admin.tabs.remove "Products"
-	end
+	# def deactivate
+	# 	admin.tabs.remove "Products"
+	# end
 	
 end
