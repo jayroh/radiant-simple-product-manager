@@ -1,7 +1,7 @@
 class Admin::ProductsController < Admin::ResourceController
 	model_class Product
 	helper :spm
-  before_filter :add_jquery
+  before_filter :add_assets
 
 	def upload_image
 		@product=Product.find(params[:product_id])
@@ -50,8 +50,9 @@ class Admin::ProductsController < Admin::ResourceController
 
 protected
 
-  def add_jquery
+  def add_assets
     include_javascript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
+    include_stylesheet("/stylesheets/simple_product_manager.css")
   end
 
 end
