@@ -5,7 +5,32 @@ class Admin::CategoriesController < Admin::ResourceController
 	def index
 		redirect_to :controller => 'admin/products', :action => 'index'
 	end
+	
+  # =======================================================================================================
+  # = added create, edit & destroy actions to override default redirect_to with Admin::ResourceController =
+  # =======================================================================================================
 
+	def create
+	  @category = Category.create(params[:category])
+    redirect_to :controller => 'admin/products', :action => 'index'
+	end
+	
+	def destroy
+	  Category.destroy(params[:id])
+	  redirect_to :controller => 'admin/products', :action => 'index'
+	end
+	
+	def update
+	  @category = Category.find(params[:id])
+	  if @category.update_attributes(params[:category])
+      redirect_to :controller => 'admin/products', :action => 'index'
+    else
+      render(:action=>'edit')
+    end
+	end
+	
+	# ==========================================================================
+	
 	def move
 		@category=Category.find(params[:id])
 		case params[:d]
@@ -20,4 +45,5 @@ class Admin::CategoriesController < Admin::ResourceController
 		end
 		redirect_to :controller => 'admin/products', :action => 'index'
 	end
+
 end
