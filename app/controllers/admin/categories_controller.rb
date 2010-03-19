@@ -1,7 +1,8 @@
 class Admin::CategoriesController < Admin::ResourceController
 	model_class Category
 	helper :spm
-	
+  before_filter :add_assets
+  
 	def index
 		redirect_to :controller => 'admin/products', :action => 'index'
 	end
@@ -45,5 +46,12 @@ class Admin::CategoriesController < Admin::ResourceController
 		end
 		redirect_to :controller => 'admin/products', :action => 'index'
 	end
+
+protected
+
+  def add_assets
+    include_javascript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
+    include_stylesheet("/stylesheets/simple_product_manager.css")
+  end
 
 end
