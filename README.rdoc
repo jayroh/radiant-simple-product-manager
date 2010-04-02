@@ -61,6 +61,7 @@ The categories and products are exposed to the site using the following tags:
   <r:category:unless_ancestor_or_self> ... </r:category:unless_ancestor_or_self>
   <r:category:id />
   <r:category:title />
+  <r:category:css_class />
   <r:category:description />
   <r:category:field name="" />
   <r:category:link [selected="current"]>...</r:category:link>
