@@ -365,6 +365,11 @@ If specified, 'parent' can be either the ID of the parent Category, or it's titl
 		html_escape category.title
 	end
 	
+	desc "Outputs the category slug loaded by <r:category> or <r:categories:each>"
+	tag 'category:css_class' do |tag|
+		tag.locals.category.title.gsub(/&amp; /, '').gsub(/& /, '').tableize.gsub(/ /, "_")
+  end
+	
  	desc "Renders the HTML-escaped description of the current category loaded by <r:category> or <r:categories:each>"
 	tag 'category:description' do |tag|
 		category = tag.locals.category
