@@ -7,7 +7,7 @@
           <%= text_field "product", "title", :class => 'textbox', :maxlength => 255 %>
         </p>
         <p class="category title row">
-          <label for="product_category_id">Category</label><br />
+          <label for="product_category_id">Category</label>
           <%= select "product", "category_id", Category.find(:all).collect { |x| [ x.to_s, x.id ] }, :selected => @product.category_id %>
         </p>
         <p class="price title row">
@@ -15,12 +15,12 @@
           <%= text_field "product", "price", :class => 'textbox', :maxlength => 255 %>
         </p>
         <p class="description row">
-          <label for="product_description">Description</label><br />
+          <label for="product_description">Description</label>
           <%= text_area "product", "description", :class => 'textarea', :maxlength => 255 %>
         </p>
       <% custom_fields(:product).each do |field| -%>
         <p class="custom_field row title">
-          <label for="<%= field %>"><%= humanize field %></label><br />
+          <label for="<%= field %>"><%= humanize field %></label>
           <%= text_field_tag "product[custom][#{field}]", @product.json_field_get(field), :class => 'textbox', :maxlength => 255 %>
         </p>
       <% end %>

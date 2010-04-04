@@ -1,13 +1,9 @@
-        <tr class="node level-1">
-          <td class="product" style="text-indent: 10px">
-            <%# image('products/product') %>
-            <%= link_to product.title, edit_admin_product_url(product) %>
-          </td>
-          <td class="price"><%= number_to_currency(product.price) unless product.price.nil? %></td>
-					<td class="move">
-						<%= product_move_links(product) %>
-					</td>
-          <td class="remove">
-						<%= link_to(image('remove', :alt => 'Remove product'), remove_admin_product_url(product)) %>
-          </td>
-        </tr>
+		<tr class="node level-1">
+			<td class="product" style="text-indent:10px">
+				<%# image('products/product') %>
+				<%= link_to product.title, edit_admin_product_url(product) %>
+			</td>
+			<td class="price"><%= number_to_currency(product.price) unless product.price.nil? %></td>
+			<td class="move"><%= product_move_links(product) %></td>
+			<td class="remove"><%= link_to(image('remove', :alt => 'Remove product'), remove_admin_product_url(product)) %></td>
+		</tr>

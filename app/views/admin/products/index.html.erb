@@ -38,11 +38,11 @@
       <% last_category_id = nil -%>
       <% Product.find(:all, :include => :category, :order => 'categories.parent_id ASC, categories.id ASC, categories.sequence ASC, products.sequence ASC').each do |product| %>
         <% if product.category_id != last_category_id then -%>
-				<tr class="node level-1">
-					<th colspan="4">
-						<%= link_to product.category.to_s, edit_admin_category_url(product.category) %>
-					</th>
-				</tr>
+			<tr class="node level-1">
+				<th colspan="4">
+					<%= link_to product.category.to_s, edit_admin_category_url(product.category) %>
+				</th>
+			</tr>
 		<% end -%>
 		<% last_category_id = product.category_id -%>
 		<%= render :partial => 'product_row', :locals => { :product => product } %>

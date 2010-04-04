@@ -15,24 +15,23 @@
           <%= text_field "category", "tag_names", :class => 'textbox', :maxlength => 255 %> (separate with commas)
         </p>
         <p class="description row title">
-          <label for="category_description">Description</label><br />
+          <label for="category_description">Description</label>
           <%= text_area "category", "description", :class => 'textarea', :maxlength => 255 %>
         </p>
         <p class="custom_layout row title">
-          <label for="category_custom_layout">Custom Layout</label><br />
+          <label for="category_custom_layout">Custom Layout</label>
           <%= text_field "category", "custom_layout", :class => 'textbox', :maxlength => 255 %> (blank to inherit)
         </p>
         <p class="custom_product_layout row title">
-          <label for="category_custom_product_layout">Custom Layout for Products</label><br />
+          <label for="category_custom_product_layout">Custom Layout for Products</label>
           <%= text_field "category", "custom_product_layout", :class => 'textbox', :maxlength => 255 %> (blank to inherit)
         </p>
-      <% custom_fields(:category).each do |field| -%>
+      	<% custom_fields(:category).each do |field| -%>
         <p class="custom_field row title">
-          <label for="<%= field %>"><%= humanize field %></label><br />
+          <label for="<%= field %>"><%= humanize field %></label>
           <%= text_field_tag "category[custom][#{field}]", @category.json_field_get(field), :class => 'textbox', :maxlength => 255 %>
         </p>
-      <% end %>
-         <span class="clear">&nbsp;</span>
+      	<% end %>
       </div>
     </div>
     <p class="buttons">
