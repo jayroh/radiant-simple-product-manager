@@ -173,7 +173,7 @@ NOTE: This example assumes no subcategories
 
   <h2>Product Listing</h2>
   <r:categories:each order="title ASC">
-    <div class="category">
+    <div class="category <r:category:css_class />">
       <h3><r:category:title /></h3>
       <r:products:each order="price ASC">
         <div class="product">
