@@ -232,8 +232,7 @@ module SimpleProductManagerTag
 		end
 	end
 
-	desc "Iterate over all categories in the system, optionally sorted by the field specified by 'order', or constrained by 'where', 'tag' or 'parent'
-If specified, 'parent' can be either the ID of the parent Category, or it's title."
+	desc "Iterate over all categories in the system, optionally sorted by the field specified by 'order', or constrained by 'where', 'tag' or 'parent' If specified, 'parent' can be either the ID of the parent Category, or it's title."
 	tag 'categories:each' do |tag|
 		attr = tag.attr.symbolize_keys
 		order=attr[:order] || 'sequence ASC'
@@ -278,6 +277,21 @@ If specified, 'parent' can be either the ID of the parent Category, or it's titl
 			""
 		end
 	end
+	
+	desc "Finds current category via slug in the addr."
+  tag 'category:current' do |tag|
+    attr = tag.attr.symbolize_keys
+    
+    category=Category.find(params[:id])
+    if category
+      category = category.parent if category.parent
+      tag.locals.category = category
+      tag.locals.current_category = category if attr[:page]
+      tag.expand
+    else
+      "<strong>Can't find Category</strong>"
+    end
+  end
 
 	tag 'category:unless' do |tag|
 		attr = tag.attr.symbolize_keys
