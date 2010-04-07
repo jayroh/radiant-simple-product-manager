@@ -52,6 +52,7 @@ The categories and products are exposed to the site using the following tags:
 === Category Tags
 
   <r:category:find [where=""] [tag=""]> ... </r:category:find>
+  <r:category:current [depth="root"]> ... </r:category:current>
   <r:categories:each [where=""] [tag=""] [order="sequence ASC"] [parent="id or title"]> ... </r:categories:each>
   <r:category:if [id=""] [title=""] [where=""]> ... </r:category:if>
   <r:category:unless [id=""] [title=""] [where=""]> ... </r:category:unless>
@@ -75,8 +76,11 @@ only within that Category's products.
 In this case, only Products directly owned by the current Category are shown -
 they do not recurse down into sub-Categories.
 
+On products:each tag you can specify grabbing all products underneath the current
+top-most category by setting include_subcategories to "true"
+
   <r:product:find [where=""]> ... </r:product:find>
-  <r:products:each [where=""] [order="sequence ASC"]> ... </r:products:each>
+  <r:products:each [where=""] [order="sequence ASC"] [include_subcategories="true"]> ... </r:products:each>
   <r:product:if [id=""] [title=""] [where=""]> ... </r:product:if>
   <r:product:unless [id=""] [title=""] [where=""]> ... </r:product:unless>
   <r:product:if_self> ... </r:product:if_self>
@@ -183,6 +187,21 @@ NOTE: This example assumes no subcategories
       </r:products:each>
     </div>
   </r:categories:each>
+
+=== Current Category (for working with only the current category)
+
+  <r:category:current>
+    <h2>Products for <r:category:title /></h2>
+    <div class="category <r:category:css_class />">
+      <r:products:each order="price ASC">
+        <div class="product">
+          <h4><r:product:link /> (<r:product:price precision="0" />)</h4>
+          <p><r:product:image /><r:product:description /></p>
+        </div>
+      </r:products:each>
+    </div>
+  </r:category:current>
+  
 
 === Order Form (for mailer extension)
 

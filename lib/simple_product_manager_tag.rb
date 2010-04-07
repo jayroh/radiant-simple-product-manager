@@ -30,13 +30,20 @@ module SimpleProductManagerTag
 		attr = tag.attr.symbolize_keys
 		order=attr[:order] || 'sequence ASC'
 		where=attr[:where]
+		include_subcategories=attr[:include_subcategories]
 		result = []
 		if tag.locals.category || tag.locals.subcategory then
-			if tag.locals.subcategory then
-				prods=tag.locals.subcategory.products.find(:all, :conditions => where, :order => order)
-			else
-				prods=tag.locals.category.products.find(:all, :conditions => where, :order => order)
-			end
+      if include_subcategories && tag.locals.category
+        cat_ids = Category.find(:all, :conditions => "id=#{tag.locals.category.id} OR parent_id=#{tag.locals.category.id}").collect{|c| c.id}.join(',')
+        where = "#{where} AND " if where
+        prods = Product.find(:all, :conditions => "#{where} category_id in (#{cat_ids})", :order => order)
+      else
+        if tag.locals.subcategory then
+  				prods=tag.locals.subcategory.products.find(:all, :conditions => where, :order => order)
+  			else
+  				prods=tag.locals.category.products.find(:all, :conditions => where, :order => order)
+  			end
+      end
 		else
 			prods=Product.find(:all, :conditions => where, :order => order)
 		end
@@ -284,7 +291,7 @@ module SimpleProductManagerTag
     
     category=Category.find(params[:id])
     if category
-      category = category.parent if category.parent
+      category = category.parent if category.parent && attr[:depth] && attr[:depth] == "root"
       tag.locals.category = category
       tag.locals.current_category = category if attr[:page]
       tag.expand
