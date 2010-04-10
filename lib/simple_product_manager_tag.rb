@@ -311,7 +311,8 @@ module SimpleProductManagerTag
 
 	def process_category_if(category, attr)
 		conditions=[[]]
-		if attr[:id] then
+		
+		if attr[:id] && !attr[:id].index(',') then
 			# Shortcircuit here
 			if category.id != attr[:id].to_i then
 				# It doesn't match, so we can abort early
@@ -319,7 +320,7 @@ module SimpleProductManagerTag
 			end
 		end
 
-		# We always match against the current ID
+		# We always match against the current ID(s)
 		# and the same parent ID
 		conditions[0] << 'id=?'
 		conditions << category.id
@@ -339,7 +340,10 @@ module SimpleProductManagerTag
 			conditions[0] << attr[:match]
 		end
 		conditions[0]=conditions[0].join(' AND ')
-		return (Category.count(:conditions => conditions) == 1)
+		
+		logger.warn "******************************** RUNNING QUERY ************* "		
+		return (Category.count(:conditions => conditions) >= 1)
+		
 	end
 
 	tag 'category:if_self' do |tag|
