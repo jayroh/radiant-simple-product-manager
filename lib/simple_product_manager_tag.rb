@@ -478,6 +478,12 @@ module SimpleProductManagerTag
 		html_escape subcategory.title
 	end
 	
+	desc "Outputs the subcategory slug loaded by <r:subcategory> or <r:subcategories:each>"
+	tag 'subcategory:css_class' do |tag|
+		tag.locals.subcategory.title.gsub(/&amp; /, '').gsub(/& /, '').tableize.gsub(/ /, "_")
+  end
+	
+	
  	desc "Renders the HTML-escaped description of the current subcategory loaded by <r:subcategory> or <r:subcategories:each>"
 	tag 'subcategory:description' do |tag|
 		subcategory = tag.locals.subcategory
