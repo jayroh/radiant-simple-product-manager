@@ -51,8 +51,8 @@ The categories and products are exposed to the site using the following tags:
 
 === Category Tags
 
+  <r:category [depth="root"]> ... </r:category:current>
   <r:category:find [where=""] [tag=""]> ... </r:category:find>
-  <r:category:current [depth="root"]> ... </r:category:current>
   <r:categories:each [where=""] [tag=""] [order="sequence ASC"] [parent="id or title"]> ... </r:categories:each>
   <r:category:if [id=""] [title=""] [where=""]> ... </r:category:if>
   <r:category:unless [id=""] [title=""] [where=""]> ... </r:category:unless>
@@ -188,9 +188,9 @@ NOTE: This example assumes no subcategories
     </div>
   </r:categories:each>
 
-=== Current Category (for working with only the current category)
+=== Current Category
 
-  <r:category:current>
+  <r:category>
     <h2>Products for <r:category:title /></h2>
     <div class="category <r:category:css_class />">
       <r:products:each order="price ASC">
@@ -200,7 +200,7 @@ NOTE: This example assumes no subcategories
         </div>
       </r:products:each>
     </div>
-  </r:category:current>
+  </r:category>
   
 
 === Order Form (for mailer extension)
