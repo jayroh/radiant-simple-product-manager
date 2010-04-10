@@ -341,7 +341,6 @@ module SimpleProductManagerTag
 		end
 		conditions[0]=conditions[0].join(' AND ')
 		
-		logger.warn "******************************** RUNNING QUERY ************* "		
 		return (Category.count(:conditions => conditions) >= 1)
 		
 	end
