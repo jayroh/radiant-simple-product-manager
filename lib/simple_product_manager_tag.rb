@@ -9,6 +9,14 @@ module SimpleProductManagerTag
 	end
 	
 	tag 'product' do |tag|
+	  attr = tag.attr.symbolize_keys
+    product=Product.find(params[:id])
+    if product
+      tag.locals.product = product
+      tag.expand
+    else
+      "<strong>Can't find Product</strong>"
+    end
 		tag.expand
 	end
 
@@ -213,10 +221,21 @@ module SimpleProductManagerTag
 	tag 'categories' do |tag|
 		tag.expand
 	end
-	
-	tag 'category' do |tag|
-		tag.expand
-	end
+		
+	desc "Finds current category."
+  tag 'category' do |tag|
+    attr = tag.attr.symbolize_keys
+    category_id = params[:category_id].present? ? params[:category_id] : params[:id]
+    category=Category.find(category_id)
+    if category
+      category = category.parent if category.parent && attr[:depth] && attr[:depth] == "root"
+      tag.locals.category = category
+      tag.locals.current_category = category if attr[:page]
+      tag.expand
+    else
+      "<strong>Can't find Category</strong>"
+    end
+  end
 
 	desc "Find a specific category using the 'tag' given, or the SQL conditions specified by 'where'.'"	
 	tag 'category:find' do |tag|
@@ -284,21 +303,6 @@ module SimpleProductManagerTag
 			""
 		end
 	end
-	
-	desc "Finds current category via slug in the addr."
-  tag 'category:current' do |tag|
-    attr = tag.attr.symbolize_keys
-    
-    category=Category.find(params[:id])
-    if category
-      category = category.parent if category.parent && attr[:depth] && attr[:depth] == "root"
-      tag.locals.category = category
-      tag.locals.current_category = category if attr[:page]
-      tag.expand
-    else
-      "<strong>Can't find Category</strong>"
-    end
-  end
 
 	tag 'category:unless' do |tag|
 		attr = tag.attr.symbolize_keys
