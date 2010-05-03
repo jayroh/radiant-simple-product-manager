@@ -477,7 +477,7 @@ module SimpleProductManagerTag
 		text=tag.expand
 		text=tag.locals.subcategory.title if text.blank?
 		o="<a href=\"#{tag.locals.subcategory.url}\""
-		if tag.locals.subcategory.url == tag.locals.page.url then
+		if tag.locals.subcategory.url == tag.locals.page.url || tag.locals.page.url.index(tag.locals.subcategory.url) then
 			selected=attr[:selected] || 'current'
 			o << " class=\"#{selected}\""
 		end
