@@ -11,6 +11,18 @@ module SimpleProductManagerTag
 	tag 'product' do |tag|
 		tag.expand
 	end
+	
+	tag 'product:current' do |tag|
+	  attr = tag.attr.symbolize_keys
+    product=Product.find(params[:id])
+    if product
+      tag.locals.product = product
+      tag.expand
+    else
+      "<strong>Can't find Product</strong>"
+    end
+		tag.expand
+	end
 
 	desc "Find a specific product using the SQL conditions specified by 'where'"	
 	tag 'product:find' do |tag|
@@ -210,13 +222,26 @@ module SimpleProductManagerTag
 		tag.locals.product_image.url(attr[:type])
 	end
 
+  tag 'category' do |tag|
+    tag.expand
+  end
+
 	tag 'categories' do |tag|
 		tag.expand
 	end
-	
-	tag 'category' do |tag|
-		tag.expand
-	end
+		
+	desc "Finds current category."
+  tag 'category:current' do |tag|
+    attr = tag.attr.symbolize_keys
+    category_id = params[:category_id].present? ? params[:category_id] : params[:id]
+    if category_id
+      category=Category.find(category_id)
+      category = category.parent if category.parent && attr[:depth] && attr[:depth] == "root"
+      tag.locals.category = category
+      tag.locals.current_category = category if attr[:page]
+    end
+    tag.expand
+  end
 
 	desc "Find a specific category using the 'tag' given, or the SQL conditions specified by 'where'.'"	
 	tag 'category:find' do |tag|
@@ -284,21 +309,6 @@ module SimpleProductManagerTag
 			""
 		end
 	end
-	
-	desc "Finds current category via slug in the addr."
-  tag 'category:current' do |tag|
-    attr = tag.attr.symbolize_keys
-    
-    category=Category.find(params[:id])
-    if category
-      category = category.parent if category.parent && attr[:depth] && attr[:depth] == "root"
-      tag.locals.category = category
-      tag.locals.current_category = category if attr[:page]
-      tag.expand
-    else
-      "<strong>Can't find Category</strong>"
-    end
-  end
 
 	tag 'category:unless' do |tag|
 		attr = tag.attr.symbolize_keys
@@ -311,7 +321,8 @@ module SimpleProductManagerTag
 
 	def process_category_if(category, attr)
 		conditions=[[]]
-		if attr[:id] then
+		
+		if attr[:id] && !attr[:id].index(',') then
 			# Shortcircuit here
 			if category.id != attr[:id].to_i then
 				# It doesn't match, so we can abort early
@@ -319,7 +330,7 @@ module SimpleProductManagerTag
 			end
 		end
 
-		# We always match against the current ID
+		# We always match against the current ID(s)
 		# and the same parent ID
 		conditions[0] << 'id=?'
 		conditions << category.id
@@ -339,7 +350,9 @@ module SimpleProductManagerTag
 			conditions[0] << attr[:match]
 		end
 		conditions[0]=conditions[0].join(' AND ')
-		return (Category.count(:conditions => conditions) == 1)
+		
+		return (Category.count(:conditions => conditions) >= 1)
+		
 	end
 
 	tag 'category:if_self' do |tag|
@@ -464,7 +477,7 @@ module SimpleProductManagerTag
 		text=tag.expand
 		text=tag.locals.subcategory.title if text.blank?
 		o="<a href=\"#{tag.locals.subcategory.url}\""
-		if tag.locals.subcategory.url == tag.locals.page.url then
+		if tag.locals.subcategory.url == tag.locals.page.url || tag.locals.page.url.index(tag.locals.subcategory.url) then
 			selected=attr[:selected] || 'current'
 			o << " class=\"#{selected}\""
 		end
@@ -477,6 +490,12 @@ module SimpleProductManagerTag
 		subcategory = tag.locals.subcategory
 		html_escape subcategory.title
 	end
+	
+	desc "Outputs the subcategory slug loaded by <r:subcategory> or <r:subcategories:each>"
+	tag 'subcategory:css_class' do |tag|
+		tag.locals.subcategory.title.gsub(/&amp; /, '').gsub(/& /, '').tableize.gsub(/ /, "_")
+  end
+	
 	
  	desc "Renders the HTML-escaped description of the current subcategory loaded by <r:subcategory> or <r:subcategories:each>"
 	tag 'subcategory:description' do |tag|
