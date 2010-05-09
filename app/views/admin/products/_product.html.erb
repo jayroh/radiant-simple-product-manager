@@ -16,7 +16,7 @@
         </p>
         <p class="description row">
           <label for="product_description">Description</label>
-          <%= text_area "product", "description", :class => 'textarea', :maxlength => 255 %>
+          <%= text_area "product", "description", :class => 'textarea' %>
         </p>
       <% custom_fields(:product).each do |field| -%>
         <p class="custom_field row title">
