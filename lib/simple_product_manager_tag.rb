@@ -155,17 +155,19 @@ module SimpleProductManagerTag
 	tag 'product:price' do |tag|
 		attr = tag.attr.symbolize_keys
 		product = tag.locals.product
-		precision=attr[:precision]
-		if precision.nil? then
-			precision=2
-		else
-			precision=precision.to_i
-		end
-		number_to_currency(product.price.to_f, 
-		                   :precision => precision,
-		                   :unit => attr[:unit] || "$",
-		                   :separator => attr[:separator] || ".",
-		                   :delimiter => attr[:delimiter] || ",")
+    product.price
+		# REMOVING PRECISION MATH TO ALLOW FOR MULTIPLE PRICES
+		# precision=attr[:precision]
+		# if precision.nil? then
+		# 	precision=2
+		# else
+		# 	precision=precision.to_i
+		# end
+		# number_to_currency(product.price.to_f, 
+		#                    :precision => precision,
+		#                    :unit => attr[:unit] || "$",
+		#                    :separator => attr[:separator] || ".",
+		#                    :delimiter => attr[:delimiter] || ",")
 	end
 	
 	desc "Renders the requested field from the product loaded by <r:product:find> or <r:products:each>. Requires 'name' is provided."
