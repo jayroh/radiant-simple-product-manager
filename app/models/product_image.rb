@@ -2,7 +2,7 @@ class ProductImage < ActiveRecord::Base
 
 	has_attachment :storage => :file_system,
 	               :thumbnails => PRODUCT_ATTACHMENT_SIZES,
-	               :max_size => 3.megabytes,
+	               :max_size => 10.megabytes,
                  :processor => :rmagick
 
 	validates_as_attachment

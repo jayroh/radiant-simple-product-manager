@@ -1,7 +1,7 @@
 require 'json_fields'
 
 # Set the default attachment sizes
-PRODUCT_ATTACHMENT_SIZES={:thumbnail => '95x95>', :product => '500x500>'}
+PRODUCT_ATTACHMENT_SIZES={:thumbnail => '95x95>', :product => '500x300>'}
 
 class SimpleProductManagerExtension < Radiant::Extension
 	version "0.9.0"
