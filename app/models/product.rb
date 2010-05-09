@@ -2,8 +2,7 @@ class Product < ActiveRecord::Base
 	belongs_to :category
 	has_many :product_images, :dependent => :destroy, :conditions => [ 'parent_id IS NULL' ], :order => :sequence
 	
-	validates_presence_of :title
-	validates_numericality_of :price, :greater_than => 0.00, :allow_nil => true
+	validates_presence_of :title, :price
 
 	before_save :reconcile_sequence_numbers
 	after_save :resequence_all
