@@ -1,0 +1,9 @@
+<tr>
+	<td class="sku"><%= f.text_field :sku %></td>
+	<td class="price"><%= f.text_field :price %></td>
+	<td class="description"><%= f.text_field :description %></td>
+	<td class="destroy">
+		<%= f.hidden_field :_destroy %>
+		<%= link_to_function '<img src="/images/admin/remove.png?1267030484" alt="Remove Category">', "remove_sku(this)"%>
+	</td>
+</tr>

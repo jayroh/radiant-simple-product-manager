@@ -1,8 +1,10 @@
 class Product < ActiveRecord::Base
 	belongs_to :category
 	has_many :product_images, :dependent => :destroy, :conditions => [ 'parent_id IS NULL' ], :order => :sequence
+	has_many :skus, :dependent => :destroy, :order => :sku
+	accepts_nested_attributes_for :skus, :allow_destroy => true, :reject_if => lambda { |s| s[:sku].blank? }
 	
-	validates_presence_of :title, :price
+	validates_presence_of :title, :description
 
 	before_save :reconcile_sequence_numbers
 	after_save :resequence_all

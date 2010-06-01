@@ -10,21 +10,37 @@
           <label for="product_category_id">Category</label>
           <%= select "product", "category_id", Category.find(:all).collect { |x| [ x.to_s, x.id ] }, :selected => @product.category_id %>
         </p>
-        <p class="price title row">
-          <label for="product_price">Price</label>
-          <%= text_field "product", "price", :class => 'textbox', :maxlength => 255 %>
-        </p>
         <p class="description row">
           <label for="product_description">Description</label>
           <%= text_area "product", "description", :class => 'textarea' %>
         </p>
-      <% custom_fields(:product).each do |field| -%>
-        <p class="custom_field row title">
-          <label for="<%= field %>"><%= humanize field %></label>
-          <%= text_field_tag "product[custom][#{field}]", @product.json_field_get(field), :class => 'textbox', :maxlength => 255 %>
-        </p>
-      <% end %>
-         <span class="clear">&nbsp;</span>
+      	<% custom_fields(:product).each do |field| -%>
+			<p class="custom_field row title">
+			  <label for="<%= field %>"><%= humanize field %></label>
+			  <%= text_field_tag "product[custom][#{field}]", @product.json_field_get(field), :class => 'textbox', :maxlength => 255 %>
+			</p>
+	    <% end %>
+
+		<div id="skus">
+			<h2>SKUs</h2>
+			<table class="index">
+				<thead>
+					<tr>
+						<th>Product SKU</th>
+						<th>Price</th>
+						<th>Description</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% f.fields_for :skus do |builder| -%>
+						<%= render 'sku_fields', :f => builder %>
+					<% end -%>
+				</tbody>
+			</table>
+			<a href="#" id="add_sku" onclick="add_sku(); return false;">add a new sku</a>
+		</div>
+	
       </div>
     </div>
     <p class="buttons">

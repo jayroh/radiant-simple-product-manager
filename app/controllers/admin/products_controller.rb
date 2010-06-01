@@ -3,6 +3,15 @@ class Admin::ProductsController < Admin::ResourceController
 	helper :spm
   before_filter :add_assets
 
+  def new
+    @product = Product.new
+    3.times { @product.skus.build }
+  end
+  
+  def edit
+    @product = Product.find(params[:id])
+  end
+
 	def upload_image
 		@product=Product.find(params[:product_id])
 		@image=@product.product_images.new(params[:product_image])
@@ -52,6 +61,7 @@ protected
 
   def add_assets
     include_javascript("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
+    include_javascript("/javascripts/admin/simple_product_manager.js")
     include_stylesheet("/stylesheets/simple_product_manager.css")
   end
 
