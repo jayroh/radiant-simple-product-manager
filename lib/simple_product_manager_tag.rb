@@ -180,11 +180,48 @@ module SimpleProductManagerTag
 	tag 'product:images' do |tag|
 		tag.expand
 	end
-
+	
 	tag 'product:image' do |tag|
 		tag.expand
 	end
-
+	
+	tag 'product:skus' do |tag|
+	  tag.expand
+	end
+	
+	tag 'product:sku' do |tag|
+	  tag.expand
+	end
+	
+	desc "Loops over all the SKUs associated with this product."
+	tag "product:skus:each" do |tag|
+	  attr = tag.attr.symbolize_keys
+	  product = tag.locals.product
+	  result = []
+	  product.skus.find(:all).each do |sk|
+	    tag.locals.sku = sk
+	    result << tag.expand
+	  end
+	  result
+	end
+	
+	
+	tag "product:sku:sku_value" do |tag|
+    html_escape tag.locals.sku.sku.upcase
+	end
+	tag "product:sku:id" do |tag|
+	  tag.locals.sku.sku.upcase.gsub(/[\s]/,"_").gsub(/[^A-Z0-9]/,"_")
+	end
+  tag "product:sku:price" do |tag|
+    price = tag.locals.sku.price
+    price = sprintf "%.2f", price
+    price
+  end
+  tag "product:sku:description" do |tag|
+    html_escape tag.locals.sku.description
+  end
+  
+  
 	desc "Loops over all of the images attached to this product. Optionally accepts 'limit' to restrict the number of images returned. Provide 'order' to sort the images (defaults to 'filename')."
 	tag "product:images:each" do |tag|
 		attr = tag.attr.symbolize_keys
