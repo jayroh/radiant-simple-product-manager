@@ -33,7 +33,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% f.fields_for :skus do |builder| -%>
+					<% f.fields_for :skus, @product.skus.find(:all, :order => "id ASC") do |builder| -%>
 						<%= render 'sku_fields', :f => builder %>
 					<% end -%>
 				</tbody>

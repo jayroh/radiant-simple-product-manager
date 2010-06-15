@@ -532,7 +532,7 @@ module SimpleProductManagerTag
 	
 	desc "Outputs the subcategory slug loaded by <r:subcategory> or <r:subcategories:each>"
 	tag 'subcategory:css_class' do |tag|
-		tag.locals.subcategory.title.gsub(/&amp; /, '').gsub(/& /, '').tableize.gsub(/ /, "_")
+		tag.locals.subcategory.title.gsub(/&amp; /, '').gsub(/& /, '').gsub(/\(|\)|\.|\-/, '').tableize.gsub(/ /, "_")
   end
 	
 	
