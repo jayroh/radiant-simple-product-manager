@@ -14,15 +14,30 @@
 						</thead>
 						<tbody>
 						<% product.product_images.each do |pi| %>
-							<tr class="product_image">
-							<td><%= image_tag(pi.public_filename(:thumbnail)) %></td>
-							<td class="desc"><%= pi.description %></td>
-							<td class="tags"><%= pi.tag_names %></td>
-							<td class="move">
-								<%= product_image_move_links(pi) %>
-							</td>
-							<td class="remove"><%= button_to('Delete', admin_delete_product_image_url(pi), :method => :delete) %></td>
-						</tr>
+							<tr class="product_image" id="image_<%= pi.id %>">
+								<td class="image"><%= image_tag(pi.public_filename(:thumbnail)) %></td>
+								<td class="desc"><%= pi.description %></td>
+								<td class="tags"><%= pi.tag_names %></td>
+								<td class="move">
+									<%= product_image_move_links(pi) %>
+								</td>
+								<td class="remove">
+									<%= button_to('Delete', admin_delete_product_image_url(pi), :method => :delete) %>
+									<input type="button" name="edit_<%= pi.id %>" value="Edit" id="edit_<%= pi.id %>" class="show_edit" />
+								</td>
+							</tr>
+							<% form_for pi, :url => admin_update_product_image_url(pi), :html => {:method => :put, :multipart => true} do |i| %>
+								<tr class="product_image_errors">
+									<td colspan="5"><%= error_messages_for :product_image %></td>
+								</tr>
+								<tr class="edit_product_image" id="edit_image_<%= pi.id %>">
+									<td class="image"><%= i.file_field :uploaded_data, :class => 'file', :size => 14 %></td>
+									<td class="desc"><%= i.text_field :description, :class => 'textbox', :maxlength => 255 %></td>
+									<td class="tags"><%= i.text_field :tag_names, :class => 'textbox', :maxlength => 255 %></td>
+									<td class="move">&nbsp;</td>
+									<td class="edit"><%= submit_tag 'Save Changes' %></td>
+								</tr>
+							<% end %>
 						<% end %>
 						</tbody>
 					</table>

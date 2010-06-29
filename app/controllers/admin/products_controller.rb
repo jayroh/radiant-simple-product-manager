@@ -27,6 +27,14 @@ class Admin::ProductsController < Admin::ResourceController
 		redirect_to :action => 'edit', :id => product_id
 	end
 
+  def update_image
+    @image = ProductImage.find(params[:id])
+    product_id=@image.product_id
+    @image.update_attributes(params[:product_image])
+    redirect_to :action => 'edit', :id => product_id
+  end
+
+
 	def move
 		@product=Product.find(params[:id])
 		case params[:d]
