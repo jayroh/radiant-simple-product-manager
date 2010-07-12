@@ -36,6 +36,31 @@ module SimpleProductManagerTag
 		end
 		tag.expand
 	end
+  
+  desc "Returns \"Product Search\" if there's no search query ... otherwise return what's in the q param of Querystring"
+  tag 'product:search_query' do |tag|
+    attr = tag.attr.symbolize_keys
+    if params[:q] && params[:q].size > 0 then
+      return params[:q]
+    else
+      return "Product Search"
+    end
+  end
+
+  desc "Returns all of the products found in a search"
+  tag 'products:search_results' do |tag|
+		attr = tag.attr.symbolize_keys
+		result = []
+    if params[:q]
+      prods = Product.find(:all, :conditions => ["title like ? OR description like ?", "%#{params[:q]}%", "%#{params[:q]}%"])
+		  prods.each do |product|
+			  tag.locals.product = product
+			  result << tag.expand
+		  end
+    end
+		result
+  end
+
 
 	desc "Iterate over all products in the system, optionally sorted by the field specified by 'order', or constrained by 'where'."
 	tag 'products:each' do |tag|
@@ -243,7 +268,7 @@ module SimpleProductManagerTag
 		result
 	end
 	
-	%w( description filename ).each do |field|
+	%w( description filename tags ).each do |field|
 		tag "product:image:#{field}" do |tag|
 			tag.locals.product_image.send(field.to_sym)
 		end

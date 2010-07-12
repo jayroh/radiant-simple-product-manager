@@ -19,6 +19,7 @@ class SimpleProductManagerExtension < Radiant::Extension
 			admin.move_product_image    'products/move_image/:id/:d', :controller => 'products', :action => 'move_image', :method => :get
 			admin.move_category         'categories/move/:id/:d', :controller => 'categories', :action => 'move', :method => :get
 		end
+    map.connect 'products/search', :controller => 'products', :action => 'search'
 		map.connect 'products/:id', :controller => 'categories', :action => 'show', :id => /\d+(-[A-Za-z\-]+)?/
 		map.connect 'products/:category_id/:id', :controller => 'products', :action => 'show'
 	end
