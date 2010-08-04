@@ -223,7 +223,7 @@ module SimpleProductManagerTag
 	  attr = tag.attr.symbolize_keys
 	  product = tag.locals.product
 	  result = []
-	  product.skus.find(:all).each do |sk|
+	  product.skus.find(:all, :order => "id").each do |sk|
 	    tag.locals.sku = sk
 	    result << tag.expand
 	  end
