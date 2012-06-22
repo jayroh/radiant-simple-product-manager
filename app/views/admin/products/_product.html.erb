@@ -17,7 +17,7 @@
       	<% custom_fields(:product).each do |field| -%>
 			<p class="custom_field row title">
 			  <label for="<%= field %>"><%= humanize field %></label>
-			  <%= text_field_tag "product[custom][#{field}]", @product.json_field_get(field), :class => 'textbox', :maxlength => 255 %>
+			  <%= text_field_tag "product[custom][#{field}]", @product.json_field_get(field), :class => 'textbox', :maxlength => 911 %>
 			</p>
 	    <% end %>
 
